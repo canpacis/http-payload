@@ -39,11 +39,13 @@ func TestPipePrinter(t *testing.T) {
 	w := NewResponseWriter()
 
 	printer := payload.NewPipePrinter(
+		payload.NewJSONPrinter(w),
 		payload.NewHeaderPrinter(w),
 		payload.NewCookiePrinter(w),
 	)
 
 	err := printer.Print(&Params{
+		Email:    "test@example.com",
 		Language: "en",
 		Token:    "access-token",
 	})
@@ -52,4 +54,5 @@ func TestPipePrinter(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal("en", w.header.Get("Accept-Language"))
 	assert.Equal("token=access-token; Path=/", w.header.Get("Set-Cookie"))
+	assert.Equal("{\"email\":\"test@example.com\"}\n", w.buffer.String())
 }

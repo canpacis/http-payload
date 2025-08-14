@@ -1,6 +1,7 @@
 package httppayload
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -10,6 +11,18 @@ import (
 
 type Printer interface {
 	Print(any) error
+}
+
+type JSONPrinter struct {
+	w http.ResponseWriter
+}
+
+func (p *JSONPrinter) Print(v any) error {
+	return json.NewEncoder(p.w).Encode(v)
+}
+
+func NewJSONPrinter(w http.ResponseWriter) *JSONPrinter {
+	return &JSONPrinter{w: w}
 }
 
 type HeaderPrinter struct {
