@@ -73,14 +73,19 @@ func (p *CookiePrinter) SetField(key string, value any, field reflect.StructFiel
 			samesite = http.SameSiteDefaultMode
 		}
 	}
+	expires, ok := field.Tag.Lookup("cookie-expires")
+	if !ok {
+		expires = ""
+	}
 
 	cookieval := fmt.Sprintf("%s", value)
 	http.SetCookie(p.w, &http.Cookie{
-		Name:     key,
-		Value:    cookieval,
-		Path:     path,
-		Secure:   secure,
-		SameSite: samesite,
+		Name:       key,
+		Value:      cookieval,
+		Path:       path,
+		Secure:     secure,
+		SameSite:   samesite,
+		RawExpires: expires,
 	})
 }
 
