@@ -38,7 +38,12 @@ func (p *HeaderPrinter) Set(key string, value any) {
 			panic("expected int for Status header")
 		}
 	} else {
-		p.w.Header().Set(key, fmt.Sprintf("%s", value))
+		value, ok := value.(string)
+		if ok {
+			p.w.Header().Set(key, value)
+		} else {
+			panic("expected string for header")
+		}
 	}
 }
 
