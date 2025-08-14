@@ -27,25 +27,25 @@ func (r *Role) UnmarshalString(s string) error {
 }
 
 type Params struct {
-	Email string `json:"email"`
-	Name  string `json:"name"`
+	Email string `json:"email,omitempty"`
+	Name  string `json:"name,omitempty"`
 
-	Language string `header:"accept-language"`
+	Language string `json:"-" header:"accept-language"`
 
-	Page  uint32 `query:"page" form:"page"`
-	Done  bool   `query:"done"`
-	Role  Role   `query:"role"`
-	Roles []Role `query:"roles"`
+	Page  uint32 `json:"-" query:"page" form:"page"`
+	Done  bool   `json:"-" query:"done"`
+	Role  Role   `json:"-" query:"role"`
+	Roles []Role `json:"-" query:"roles"`
 
-	Filters []string `form:"filters"`
-	Numbers []int    `form:"numbers"`
+	Filters []string `json:"-" form:"filters"`
+	Numbers []int    `json:"-" form:"numbers"`
 
-	Token string `cookie:"token"`
+	Token string `json:"-" cookie:"token"`
 
-	Document multipart.File `multipart:"document"`
+	Document multipart.File `json:"-" multipart:"document"`
 
-	ID   string `path:"id"`
-	Slug string `path:"slug"`
+	ID   string `json:"-" path:"id"`
+	Slug string `json:"-" path:"slug"`
 }
 
 type Expectation struct {
