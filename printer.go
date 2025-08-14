@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strconv"
 
 	ende "github.com/canpacis/http-payload/internal/structende"
 )
@@ -30,7 +31,14 @@ type HeaderPrinter struct {
 }
 
 func (p *HeaderPrinter) Set(key string, value any) {
-	p.w.Header().Set(key, fmt.Sprintf("%s", value))
+	if key == "Status" {
+		code, err := strconv.Atoi(fmt.Sprintf("%s", value))
+		if err == nil {
+			p.w.WriteHeader(code)
+		}
+	} else {
+		p.w.Header().Set(key, fmt.Sprintf("%s", value))
+	}
 }
 
 func (p *HeaderPrinter) Print(v any) error {
