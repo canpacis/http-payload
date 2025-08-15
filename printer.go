@@ -26,14 +26,15 @@ func NewJSONPrinter(w http.ResponseWriter) *JSONPrinter {
 }
 
 type HeaderPrinter struct {
-	w http.ResponseWriter
+	w      http.ResponseWriter
+	status int
 }
 
 func (p *HeaderPrinter) Set(key string, value any) {
 	if key == "Status" {
 		code, ok := value.(int)
 		if ok {
-			p.w.WriteHeader(code)
+			p.status = code
 		} else {
 			panic("expected int for Status header")
 		}
@@ -48,6 +49,11 @@ func (p *HeaderPrinter) Set(key string, value any) {
 }
 
 func (p *HeaderPrinter) Print(v any) error {
+	defer func() {
+		if p.status != 0 {
+			p.w.WriteHeader(p.status)
+		}
+	}()
 	return ende.NewEncoder(p, "header").Encode(v)
 }
 
