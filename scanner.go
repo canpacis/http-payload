@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"reflect"
 
-	ende "github.com/canpacis/http-payload/internal/structende"
+	ende "github.com/canpacis/http-payload/structende"
 )
 
 // Scanner interface resembles a json parser, it populates the given struct with available values based on its field tags. It should return an error when v is not a struct.

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"reflect"
 
-	ende "github.com/canpacis/http-payload/internal/structende"
+	ende "github.com/canpacis/http-payload/structende"
 )
 
 type Printer interface {
